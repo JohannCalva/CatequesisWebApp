@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Catequizando{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        
+        <div class="mb-3">
+            <a href="{% url 'catequizando_detalle' pk %}" class="text-decoration-none text-muted fw-bold">
+                <i class="bi bi-arrow-left me-1"></i> Cancelar y Volver
+            </a>
+        </div>
+
+        <div class="card shadow border-0 rounded-4 edit-card">
+            
+            <div class="form-header">
+                <h3 class="fw-bold mb-1">Editar Información</h3>
+                <p class="text-muted small mb-0">Actualiza los datos de contacto, médicos y pastorales.</p>
+            </div>
+
+            <div class="card-body p-4">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger rounded-3 mb-4">
+                            {% for error in form.non_field_errors %}
+                                <i class="bi bi-exclamation-circle-fill me-2"></i>{{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="mb-5">
+                        <div class="form-section-title">
+                            <i class="bi bi-person-lines-fill"></i> Datos de Contacto
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Teléfono</label>
+                                {{ form.telefono }}
+                                {% if form.telefono.errors %}
+                                    <div class="text-danger small mt-1">{{ form.telefono.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Correo Electrónico</label>
+                                {{ form.correo }}
+                                {% if form.correo.errors %}
+                                    <div class="text-danger small mt-1">{{ form.correo.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <div class="form-section-title">
+                            <i class="bi bi-book-half"></i> Información Pastoral
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Estado</label>
+                                {{ form.estado }}
+                                <div class="form-text text-muted small">Define si el alumno está activo actualmente.</div>
+                                {% if form.estado.errors %}
+                                    <div class="text-danger small mt-1">{{ form.estado.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Año en Curso</label>
+                                {{ form.anioencurso }}
+                                {% if form.anioencurso.errors %}
+                                    <div class="text-danger small mt-1">{{ form.anioencurso.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <div class="form-section-title text-danger" style="color: #dc3545;">
+                            <i class="bi bi-heart-pulse-fill text-danger"></i> Salud y Seguridad
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Tipo de Sangre</label>
+                                {{ form.tiposangre }}
+                            </div>
+
+                            <div class="col-md-8">
+                                <label class="form-label">Alergias</label>
+                                {{ form.alergia }}
+                                <div class="form-text">Indique medicamentos o alimentos. Dejar en blanco si no aplica.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Comentarios Adicionales</label>
+                        {{ form.comentario }} </div>
+
+                    <hr class="my-4">
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{% url 'catequizando_detalle' pk %}" class="btn btn-light border px-4 fw-bold">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold shadow-sm">
+                            <i class="bi bi-save me-2"></i>Guardar Cambios
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

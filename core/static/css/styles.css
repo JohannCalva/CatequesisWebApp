@@ -1,0 +1,278 @@
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand {
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+}
+
+.navbar {
+    background-color: #ffffff;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: #0d6efd !important;
+    letter-spacing: -0.5px;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: #6c757d;
+    margin-right: 1rem;
+    transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+    color: #0d6efd; /* Azul al pasar el mouse */
+}
+
+/* Estado activo (se activa vía JS) */
+.nav-link.active {
+    color: #0d6efd !important;
+    font-weight: 600;
+}
+
+.btn-admin {
+    border-radius: 50px; /* Botón completamente redondo */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-admin:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
+}
+
+.footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e9ecef;
+}
+
+.alert-custom {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.hero-section {
+    /* Imagen de fondo con superposición oscura */
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://www.arquidiocesisdequito.com.ec/templates/yootheme/cache/ab/Captura_de_pantalla_2021-06-07_121120-ab27cfd6.png');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 80px 20px;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 15px;
+    background-color: #ffffff; /* Aseguramos fondo blanco */
+}
+
+.feature-card:hover {
+    transform: translateY(-5px); /* Efecto de flotación */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+}
+
+.icon-square {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.table-card {
+    border: none;
+    border-radius: 15px; /* Bordes redondeados en el contenedor */
+    overflow: hidden;    /* Para que la tabla no se salga de los bordes redondeados */
+    box-shadow: 0 0 20px rgba(0,0,0,0.03);
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e9ecef;
+    padding: 1rem;
+}
+
+.table tbody td {
+    vertical-align: middle; /* Centrar contenido verticalmente */
+    padding: 1rem;
+    color: #495057;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+/* Avatar con iniciales (Círculo de color junto al nombre) */
+.avatar-initial {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #e7f1ff; /* Azul muy suave */
+    color: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-right: 12px;
+}
+
+/* Botones de acción (Iconos) */
+.btn-action {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s;
+    margin-right: 4px;
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+}
+
+.profile-header-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.avatar-lg {
+    width: 80px;
+    height: 80px;
+    font-size: 2.5rem;
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+}
+
+.detail-label {
+    font-size: 0.85rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+.detail-value {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #212529;
+    margin-bottom: 1.2rem;
+}
+
+.card-section {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+    height: 100%;
+}
+
+.form-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    padding: 1.5rem;
+    border-radius: 15px 15px 0 0;
+}
+
+.form-section-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.form-section-title i {
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
+    color: #0d6efd;
+}
+
+/* Estilo para las etiquetas (labels) de Django */
+.form-label {
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+}
+
+/* Truco: Estilizar inputs de Django globalmente dentro de nuestras tarjetas */
+.edit-card input[type="text"],
+.edit-card input[type="email"],
+.edit-card input[type="number"],
+.edit-card input[type="tel"],
+.edit-card input[type="date"],
+.edit-card select,
+.edit-card textarea {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem; /* Bordes redondeados modernos */
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+/* Efecto Focus (cuando escribes) */
+.edit-card input:focus,
+.edit-card select:focus,
+.edit-card textarea:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+
+/* Checkbox estilo switch (opcional, si Estado es checkbox) */
+.edit-card input[type="checkbox"] {
+    width: 1.2em;
+    height: 1.2em;
+    margin-top: 0.25em;
+    vertical-align: top;
+    border: 1px solid #adb5bd;
+    border-radius: 0.25em;
+}
