@@ -1,5 +1,5 @@
 from django import forms
-from .models import Catequizando, Parroquia, NivelCatequesis, CicloCatequesis, Grupo
+from .models import Catequizando, Parroquia, NivelCatequesis, CicloCatequesis, Grupo, CicloCatequesis
 
 ESTADO_GENERAL = [
     ('Activo', 'Activo'),
@@ -8,8 +8,8 @@ ESTADO_GENERAL = [
 
 ESTADO_INSCRIPCION = [
     ('Activo', 'Activo'),
-    ('Retirado', 'Retirado'),
-    ('Finalizado', 'Finalizado'),
+    ('Rechazado', 'Rechazado'),
+    ('Aprobado', 'Aprobado'),
 ]
 
 ESTADO_PAGO = [
@@ -309,4 +309,50 @@ class InscripcionUpdateForm(forms.Form):
         required=False,
         label="Es Excepción",
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+
+
+# ==========================================
+# 6. Formularios para CICLOS
+# ==========================================
+
+class CicloForm(forms.Form):
+    nombreciclo = forms.CharField(
+        max_length=100,
+        label="Nombre del Ciclo",
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    fechainicio = forms.DateField(
+        label="Fecha Inicio",
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+    )
+    fechafin = forms.DateField(
+        label="Fecha Fin",
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+    )
+    estado = forms.ChoiceField(
+        choices=ESTADO_GENERAL,
+        label="Estado",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+
+
+class CicloUpdateForm(forms.Form):
+    nombreciclo = forms.CharField(
+        max_length=100,
+        label="Nombre del Ciclo",
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    fechainicio = forms.DateField(
+        label="Fecha Inicio",
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+    )
+    fechafin = forms.DateField(
+        label="Fecha Fin",
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+    )
+    estado = forms.ChoiceField(
+        choices=ESTADO_GENERAL,
+        label="Estado",
+        widget=forms.Select(attrs={'class': 'form-select'})
     )

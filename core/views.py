@@ -504,3 +504,90 @@ def inscripcion_eliminar(request, catequizando_id, grupo_id):
 
 
 
+
+# ==========================================
+# VISTAS CICLOS (CRUD con SP)
+# ==========================================
+
+from .forms import CicloForm, CicloUpdateForm
+
+def ciclo_listar(request):
+    with connection.cursor() as cursor:
+        cursor.execute("EXEC Catequesis.sp_ListarCiclos")
+        if cursor.description is None:
+            ciclos = []
+        else:
+            columns = [col[0] for col in cursor.description]
+            ciclos = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    
+    return render(request, "ciclos/listar.html", {"ciclos": ciclos})
+
+class CicloDetailView(DetailView):
+    model = CicloCatequesis
+    template_name = "ciclos/detalle.html"
+    context_object_name = "ciclo"
+
+class CicloCreateView(FormView):
+    template_name = "ciclos/crear.html"
+    form_class = CicloForm
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                EXEC Catequesis.sp_InsertarCiclo
+                    @NombreCiclo=%s,
+                    @FechaInicio=%s,
+                    @FechaFin=%s,
+                    @Estado=%s
+            """, [
+                data['nombreciclo'],
+                str(data['fechainicio']),
+                str(data['fechafin']),
+                data['estado']
+            ])
+        return redirect('ciclo_listar')
+
+class CicloUpdateView(View):
+    template_name = "ciclos/editar.html"
+    form_class = CicloUpdateForm
+
+    def get(self, request, pk):
+        try:
+            ciclo = CicloCatequesis.objects.get(pk=pk)
+            form = self.form_class(initial={
+                'nombreciclo': ciclo.nombreciclo,
+                'fechainicio': ciclo.fechainicio,
+                'fechafin': ciclo.fechafin,
+                'estado': ciclo.estado
+            })
+            return render(request, self.template_name, {'form': form, 'ciclo': ciclo})
+        except CicloCatequesis.DoesNotExist:
+             return redirect('ciclo_listar')
+
+    def post(self, request, pk):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    EXEC Catequesis.sp_ActualizarCiclo
+                        @CicloID=%s,
+                        @NombreCiclo=%s,
+                        @FechaInicio=%s,
+                        @FechaFin=%s,
+                        @Estado=%s
+                """, [
+                    pk,
+                    data['nombreciclo'],
+                    str(data['fechainicio']),
+                    str(data['fechafin']),
+                    data['estado']
+                ])
+            return redirect('ciclo_listar')
+        return render(request, self.template_name, {'form': form, 'pk': pk})
+
+def ciclo_eliminar(request, pk):
+    with connection.cursor() as cursor:
+        cursor.execute("EXEC Catequesis.sp_EliminarCiclo @CicloID=%s", [pk])
+    return redirect('ciclo_listar')

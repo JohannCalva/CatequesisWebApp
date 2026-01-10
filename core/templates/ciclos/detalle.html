@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Detalle del Ciclo</h4>
+            <a href="{% url 'ciclo_listar' %}" class="btn btn-light btn-sm">Volver</a>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Nombre:</div>
+                <div class="col-md-9">{{ ciclo.nombreciclo }}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Fecha Inicio:</div>
+                <div class="col-md-9">{{ ciclo.fechainicio }}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Fecha Fin:</div>
+                <div class="col-md-9">{{ ciclo.fechafin }}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Estado:</div>
+                <div class="col-md-9">
+                    {% if ciclo.estado == 'Activo' %}
+                    <span class="badge bg-success">Activo</span>
+                    {% else %}
+                    <span class="badge bg-secondary">{{ ciclo.estado }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <a href="{% url 'ciclo_editar' pk=ciclo.cicloid %}" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+            <a href="{% url 'ciclo_eliminar' pk=ciclo.cicloid %}" class="btn btn-danger"
+                onclick="return confirm('¿Está seguro de eliminar este ciclo?');">
+                <i class="fas fa-trash"></i> Eliminar
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

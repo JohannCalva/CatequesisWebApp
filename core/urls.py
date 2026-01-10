@@ -22,7 +22,15 @@ from .views import (
     InscripcionDetailView,
     InscripcionUpdateView,
     inscripcion_eliminar,
-    inscripcion_buscar
+    inscripcion_eliminar,
+    inscripcion_buscar,
+
+    # Ciclos
+    ciclo_listar,
+    CicloCreateView,
+    CicloUpdateView,
+    CicloDetailView,
+    ciclo_eliminar
 )
 
 urlpatterns = [
@@ -55,4 +63,13 @@ urlpatterns = [
     path("inscripciones/<int:catequizando_id>/<int:grupo_id>/editar/", InscripcionUpdateView.as_view(), name="inscripcion_editar"),
     path("inscripciones/<int:catequizando_id>/<int:grupo_id>/eliminar/", inscripcion_eliminar, name="inscripcion_eliminar"),
     path("inscripciones/buscar/", inscripcion_buscar, name="inscripcion_buscar"),
+
+    # ==========================
+    # CICLOS
+    # ==========================
+    path("ciclos/", ciclo_listar, name="ciclo_listar"),
+    path("ciclos/crear/", CicloCreateView.as_view(), name="ciclo_crear"),
+    path("ciclos/<int:pk>/detalle/", CicloDetailView.as_view(), name="ciclo_detalle"),
+    path("ciclos/<int:pk>/editar/", CicloUpdateView.as_view(), name="ciclo_editar"),
+    path("ciclos/<int:pk>/eliminar/", ciclo_eliminar, name="ciclo_eliminar"),
 ]
