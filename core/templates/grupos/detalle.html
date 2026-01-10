@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle del Grupo{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white d-flex justify-content-between">
+            <h3>{{ grupo.nombregrupo }}</h3>
+            <span class="badge bg-light text-dark">{{ grupo.estado }}</span>
+        </div>
+
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <strong>Nivel:</strong> {{ grupo.nivelcatequesis.nombre }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Ciclo:</strong> {{ grupo.ciclo.nombreciclo }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Fecha Inicio:</strong> {{ grupo.ciclo.fechainicio }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Fecha Fin:</strong> {{ grupo.ciclo.fechafin }}
+                </li>
+            </ul>
+
+            <div class="mt-4 text-end">
+                <a href="{% url 'grupo_editar' grupo.grupoid %}" class="btn btn-warning">
+                    Editar
+                </a>
+                <a href="{% url 'grupo_listar' %}" class="btn btn-secondary">
+                    Volver
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

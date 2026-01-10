@@ -166,3 +166,153 @@ class LogCertificadoEmision(models.Model):
 
     def __str__(self):
         return f"Log {self.logid}"
+
+
+
+class Representante(models.Model):
+    personaid = models.OneToOneField(Persona, on_delete=models.DO_NOTHING, db_column='PersonaID', primary_key=True)
+    relacion = models.CharField(db_column='Relacion', max_length=25)
+    ocupacion = models.CharField(db_column='Ocupacion', max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'Participante.Representante'
+
+    def __str__(self):
+        return str(self.personaid)
+
+
+class Padrino(models.Model):
+    personaid = models.OneToOneField(Persona, on_delete=models.DO_NOTHING, db_column='PersonaID', primary_key=True)
+    sacramentoid = models.ForeignKey(Sacramento, on_delete=models.DO_NOTHING, db_column='SacramentoID')
+
+    class Meta:
+        managed = False
+        db_table = 'Participante.Padrino'
+
+    def __str__(self):
+        return str(self.personaid)
+
+
+class CatequizandoRepresentante(models.Model):
+    # Composite PK (Representante_PersonaID, Catequizando_PersonaID)
+    representante_personaid = models.OneToOneField(Representante, on_delete=models.DO_NOTHING, db_column='Representante_PersonaID', primary_key=True)
+    catequizando_personaid = models.ForeignKey(Catequizando, on_delete=models.DO_NOTHING, db_column='Catequizando_PersonaID')
+
+    class Meta:
+        managed = False
+        db_table = 'Participante.CatequizandoRepresentante'
+        unique_together = (('representante_personaid', 'catequizando_personaid'),)
+
+
+class CatequizandoPadrino(models.Model):
+    # Composite PK (Padrino_PersonaID, Catequizando_PersonaID)
+    padrino_personaid = models.OneToOneField(Padrino, on_delete=models.DO_NOTHING, db_column='Padrino_PersonaID', primary_key=True)
+    catequizando_personaid = models.ForeignKey(Catequizando, on_delete=models.DO_NOTHING, db_column='Catequizando_PersonaID')
+
+    class Meta:
+        managed = False
+        db_table = 'Participante.CatequizandoPadrino'
+        unique_together = (('padrino_personaid', 'catequizando_personaid'),)
+
+
+class FeBautismo(models.Model):
+    febautismoid = models.IntegerField(db_column='FeBautismoID', primary_key=True)
+    catequizando_personaid = models.ForeignKey(Catequizando, on_delete=models.DO_NOTHING, db_column='Catequizando_PersonaID')
+    parroquia_parroquiaid = models.ForeignKey(Parroquia, on_delete=models.DO_NOTHING, db_column='Parroquia_ParroquiaID')
+    fechabautismo = models.DateField(db_column='FechaBautismo')
+    numerotomo = models.IntegerField(db_column='NumeroTomo', null=True, blank=True)
+    paginatomo = models.IntegerField(db_column='PaginaTomo', null=True, blank=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Participante.FeBautismo'
+    
+    def __str__(self):
+        return f"Fe Bautismo {self.febautismoid}"
+
+
+class Sesion(models.Model):
+    sesionid = models.IntegerField(db_column='SesionID', primary_key=True)
+    fecha = models.DateTimeField(db_column='Fecha')
+    grupoid = models.ForeignKey(Grupo, on_delete=models.DO_NOTHING, db_column='GrupoID')
+
+    class Meta:
+        managed = False
+        db_table = 'Catequesis.Sesion'
+
+    def __str__(self):
+        return f"Sesion {self.sesionid}"
+
+
+class Catequista(models.Model):
+    personaid = models.OneToOneField(Persona, on_delete=models.DO_NOTHING, db_column='PersonaID', primary_key=True)
+    tipocatequista = models.CharField(db_column='TipoCatequista', max_length=20)
+    estado = models.CharField(db_column='Estado', max_length=10)
+
+    class Meta:
+        managed = False
+        db_table = 'Catequesis.Catequista'
+    
+    def __str__(self):
+        return str(self.personaid)
+
+
+class CatequistaGrupo(models.Model):
+    # Composite PK (GrupoID, Catequista_PersonaID)
+    grupoid = models.OneToOneField(Grupo, on_delete=models.DO_NOTHING, db_column='GrupoID', primary_key=True)
+    catequista_personaid = models.ForeignKey(Catequista, on_delete=models.DO_NOTHING, db_column='Catequista_PersonaID')
+
+    class Meta:
+        managed = False
+        db_table = 'Catequesis.CatequistaGrupo'
+        unique_together = (('grupoid', 'catequista_personaid'),)
+
+
+class Asistencia(models.Model):
+    # Composite PK (Catequizando_PersonaID, SesionID)
+    catequizando_personaid = models.OneToOneField(Catequizando, on_delete=models.DO_NOTHING, db_column='Catequizando_PersonaID', primary_key=True)
+    sesionid = models.ForeignKey(Sesion, on_delete=models.DO_NOTHING, db_column='SesionID')
+    estapresente = models.BooleanField(db_column='EstaPresente')
+
+    class Meta:
+        managed = False
+        db_table = 'Catequesis.Asistencia'
+        unique_together = (('catequizando_personaid', 'sesionid'),)
+
+
+class Calificacion(models.Model):
+    calificacionid = models.IntegerField(db_column='CalificacionID', primary_key=True)
+    catequizando_personaid = models.ForeignKey(Catequizando, on_delete=models.DO_NOTHING, db_column='Catequizando_PersonaID')
+    tipocalificacion = models.CharField(db_column='TipoCalificacion', max_length=10)
+    grupoid = models.ForeignKey(Grupo, on_delete=models.DO_NOTHING, db_column='GrupoID')
+    valor = models.DecimalField(db_column='Valor', max_digits=4, decimal_places=2)
+    fecha = models.DateTimeField(db_column='Fecha')
+
+    class Meta:
+        managed = False
+        db_table = 'Catequesis.Calificacion'
+
+    def __str__(self):
+        return f"Calificacion {self.calificacionid}"
+
+
+class Inscripcion(models.Model):
+    # Clave compuesta logicamente (Catequizando + Grupo).
+    # Usamos CatequizandoID como PK para Django, pero cambiamos a ForeignKey para evitar restriccion unique de OneToOne.
+    # Atencion: No usar save()/delete() ORM, solo lectura o SPs.
+    
+    catequizando_personaid = models.ForeignKey(Catequizando, on_delete=models.DO_NOTHING, db_column='Catequizando_PersonaID', primary_key=True)
+    grupo = models.ForeignKey(Grupo, on_delete=models.DO_NOTHING, db_column='GrupoID')
+    fechainscripcion = models.DateTimeField(db_column='FechaInscripcion')
+    estadoinscripcion = models.CharField(db_column='EstadoInscripcion', max_length=10)
+    estadopago = models.CharField(db_column='EstadoPago', max_length=10)
+    esexcepcion = models.BooleanField(db_column='EsExcepcion')
+
+    class Meta:
+        managed = False
+        db_table = 'Participante.Inscripcion'
+        unique_together = (('catequizando_personaid', 'grupo'),)
+
+    def __str__(self):
+        return f"{self.catequizando_personaid} - {self.grupo}"

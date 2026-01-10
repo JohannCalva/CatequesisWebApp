@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de Grupos{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2>Listado de Grupos</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'grupo_crear' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nuevo Grupo
+        </a>
+    </div>
+</div>
+
+<!-- Buscador -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" action="{% url 'grupo_buscar' %}" class="row g-3">
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Nombre</label>
+                <input type="text" name="nombre" class="form-control" placeholder="Nombre..."
+                    value="{{ filtro_nombre }}">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Nivel</label>
+                <select name="nivel_id" class="form-select">
+                    <option value="">-- Todos --</option>
+                    {% for n in niveles %}
+                    <option value="{{ n.nivelcatequesisid }}" {% if filtro_nivel == n.nivelcatequesisid %} selected {% endif %}>
+                        {{ n.nombre }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Ciclo</label>
+                <select name="ciclo_id" class="form-select">
+                    <option value="">-- Todos --</option>
+                    {% for c in ciclos %}
+                    <option value="{{ c.cicloid }}" {% if filtro_ciclo == c.cicloid %} selected {% endif %}>
+                        {{ c.nombreciclo }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-secondary w-100">
+                    <i class="bi bi-search"></i> Filtrar
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<!-- Tabla -->
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Grupo</th>
+                <th>Nivel</th>
+                <th>Ciclo</th>
+                <th>Estado</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grupo in grupos %}
+            <tr>
+                <td>{{ grupo.NombreGrupo }}</td>
+                <td>{{ grupo.Nivel }}</td>
+                <td>{{ grupo.Ciclo }}</td>
+                <td>
+                    <span class="badge {% if grupo.Estado == 'Activo' %}bg-success{% else %}bg-secondary{% endif %}">
+                        {{ grupo.Estado }}
+                    </span>
+                </td>
+                <td class="text-center">
+                    <a href="{% url 'grupo_detail' grupo.GrupoID %}" class="btn btn-sm btn-info text-white">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <a href="{% url 'grupo_editar' grupo.GrupoID %}" class="btn btn-sm btn-warning text-white">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="{% url 'grupo_eliminar' grupo.GrupoID %}" onclick="return confirm('¿Eliminar grupo?');"
+                        class="btn btn-sm btn-danger">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center text-muted">
+                    No hay grupos registrados
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

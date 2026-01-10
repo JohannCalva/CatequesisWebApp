@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Inscripción{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-white">
+                <h4 class="mb-0">Editar Inscripción</h4>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h5>{{ item.catequizando_personaid.personaid.primernombre }} {{ item.catequizando_personaid.personaid.primerapellido }}</h5>
+                    <p class="text-muted mb-0">Grupo: {{ item.grupo.nombregrupo }}</p>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{% url 'inscripcion_detail' catequizando_id grupo_id %}"
+                            class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-warning">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

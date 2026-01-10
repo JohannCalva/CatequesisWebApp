@@ -1,10 +1,22 @@
 from django import forms
-from .models import Catequizando, Parroquia
+from .models import Catequizando, Parroquia, NivelCatequesis, CicloCatequesis, Grupo
 
-OPCIONES_ESTADO = [
+ESTADO_GENERAL = [
     ('Activo', 'Activo'),
     ('Inactivo', 'Inactivo'),
 ]
+
+ESTADO_INSCRIPCION = [
+    ('Activo', 'Activo'),
+    ('Retirado', 'Retirado'),
+    ('Finalizado', 'Finalizado'),
+]
+
+ESTADO_PAGO = [
+    ('Pagado', 'Pagado'),
+    ('Pendiente', 'Pendiente'),
+]
+
 
 OPCIONES_ANIO = [
     ('', 'Seleccione un año...'), # Opción vacía por si es required=False
@@ -53,7 +65,7 @@ class CatequizandoUpdateMiniForm(forms.Form):
     )
     
     estado = forms.ChoiceField(
-        choices=OPCIONES_ESTADO,
+        choices=ESTADO_GENERAL,
         widget=forms.Select(attrs={'class': 'form-select'})
     )
     
@@ -104,10 +116,11 @@ class CatequizandoSPForm(forms.Form):
     segundoapellido = forms.CharField(max_length=50, label="Segundo Apellido", widget=forms.TextInput(attrs={'class': 'form-control'}))
     
     fechanacimiento = forms.DateField(
-        label="Fecha Nacimiento Padre", 
-        required=False,
-        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
-    )
+    label="Fecha de Nacimiento",
+    required=True,
+    widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+)
+
     
     genero = forms.ChoiceField(
         choices=OPCIONES_GENERO, 
@@ -143,7 +156,7 @@ class CatequizandoSPForm(forms.Form):
     
     # CAMBIO: Estado ahora es Select
     estado = forms.ChoiceField(
-        choices=OPCIONES_ESTADO, 
+        choices=ESTADO_GENERAL, 
         label="Estado",
         widget=forms.Select(attrs={'class': 'form-select'})
     )
@@ -215,3 +228,85 @@ class CatequizandoSPForm(forms.Form):
             'inputmode': 'numeric'}))
     correomadre = forms.EmailField(max_length=50, required=False, label="Correo Madre", widget=forms.EmailInput(attrs={'class': 'form-control'}))
     ocupacionmadre = forms.CharField(max_length=100, required=False, label="Ocupación Madre", widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+# ==========================================
+# 4. Formularios para GRUPOS
+# ==========================================
+
+class GrupoForm(forms.Form):
+    nivelcatequesis = forms.ModelChoiceField(
+        queryset=NivelCatequesis.objects.all(),
+        label="Nivel",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    ciclo = forms.ModelChoiceField(
+        queryset=CicloCatequesis.objects.all().order_by('-fechainicio'),
+        label="Ciclo",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    nombregrupo = forms.CharField(
+        max_length=50,
+        label="Nombre del Grupo",
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    estado = forms.ChoiceField(
+        choices=ESTADO_GENERAL,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+
+
+class GrupoUpdateForm(forms.Form):
+    nombregrupo = forms.CharField(
+        max_length=50, 
+        label="Nombre del Grupo", 
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    estado = forms.ChoiceField(
+        choices=ESTADO_GENERAL,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+
+# ==========================================
+# 5. Formularios para INSCRIPCIONES
+# ==========================================
+
+class InscripcionCreateForm(forms.Form):
+    catequizando = forms.ModelChoiceField(
+        queryset=Catequizando.objects.all(),
+        label="Catequizando",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    grupo = forms.ModelChoiceField(
+        queryset=Grupo.objects.filter(estado='Activo'),
+        label="Grupo",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    estadopago = forms.ChoiceField(
+        choices=ESTADO_PAGO,
+        label="Estado de Pago",
+        initial='Pagado',
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    esexcepcion = forms.BooleanField(
+        required=False,
+        label="Es Excepción",
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+
+
+class InscripcionUpdateForm(forms.Form):
+    estadoinscripcion = forms.ChoiceField(
+        choices=ESTADO_INSCRIPCION,
+        label="Estado de la Inscripcion",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    estadopago = forms.ChoiceField(
+        choices=ESTADO_PAGO,
+        label="Estado del Pago",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    esexcepcion = forms.BooleanField(
+        required=False,
+        label="Es Excepción",
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
